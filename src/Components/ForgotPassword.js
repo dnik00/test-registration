@@ -1,7 +1,14 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, OutlinedInput, DialogActions, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import EmailPhoneField from './EmailPhoneField';
 
 export default function ForgotPassword({ open, handleClose }) {
+  const [isFormValid, setIsFormValid] = useState(false); 
+
+  const handleValidationChange = (isValid) => {
+    setIsFormValid(isValid); 
+  };
+
   return (
     <Dialog
       open={open}
@@ -18,28 +25,18 @@ export default function ForgotPassword({ open, handleClose }) {
       }}
     >
       <DialogTitle>Reset password</DialogTitle>
-      <DialogContent
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '80%' }}
-      >
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '80%' }}>
         <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a link to
-          reset your password.
+          Enter your account's email address or phone number, and we'll send you a message to reset your password.
         </DialogContentText>
-        <OutlinedInput
-          autoFocus
-          required
-          margin="dense"
-          id="email"
-          name="email"
-          label="Email address"
-          placeholder="Email address"
-          type="email"
-          fullWidth
+        <EmailPhoneField 
+          onValidationChange={handleValidationChange}
         />
       </DialogContent>
+
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={!isFormValid}>
           Continue
         </Button>
       </DialogActions>
